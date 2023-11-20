@@ -1,0 +1,233 @@
+import { getViewer } from "./viewer.js";
+var global_cost_table;
+
+//define data array
+export async function initMaterialsTable(data, onRowSelected) {
+  //initialize table
+  const table = new Tabulator("#table-materials", {
+    layout: "fitColumns",
+    data: data, //assign data to table
+    // autoColumns: true, //create columns from data field names
+    columns: [
+      {
+        title: "Material",
+        field: "material",
+        sorter: "string",
+      },
+      {
+        title: "Supplier",
+        field: "supplier",
+      },
+      {
+        title: "Price",
+        field: "price",
+        sorter: "number",
+        editor: "number",
+        cellClick: function (e, cell) {
+          console.log("cell click");
+        },
+      },
+      {
+        title: "Currency",
+        field: "currency",
+      },
+    ],
+    // rowFormatter: function (row) {
+    //   var element = row.getElement();
+    //   var arrow = document.createElement("div");
+    //   arrow.className = "tabulator-arrow";
+    //   element.insertBefore(arrow, element.firstChild);
+
+    //   // Add click event listener to each row
+    //   element.addEventListener("click", function () {
+    //     if (row.isExpanded()) {
+    //       row.contract();
+    //     } else {
+    //       row.expand();
+    //     }
+    //   });
+    // },
+  });
+  table.on("cellEdited", async (cell) => {
+    const rowdata = cell.getData();
+    const row_id = rowdata._id;
+    alert(row_id);
+    const row_price = rowdata.price;
+    costUpdate(row_id, row_price);
+
+    const params = new URLSearchParams(window.location.search);
+    const urn = params.get("urn");
+    const response = await fetch("/cost");
+    if (!response.ok) {
+      alert("Couldnt read the data");
+      throw new Error("Cannot read data");
+    }
+    const data = await response.json();
+
+    const breakdown = await calculateCostBreakdown(getViewer(), data);
+    //$("#table-cost").tabulator("replaceData", breakdown);
+    global_cost_table.replaceData(breakdown);
+    // initPieChart(getViewer(), data);
+
+    alert(row_price);
+  });
+  table.on("rowClick", function (e, row) {
+    onRowSelected(row.getData());
+  });
+
+  return table;
+}
+export async function initCostBreakdownTable(viewer, data, onRowSelected) {
+  const breakdown = await calculateCostBreakdown(viewer, data);
+  //initialize table
+  const table = new Tabulator("#table-cost", {
+    layout: "fitColumns",
+    data: breakdown, //assign data to table
+    // autoColumns: true, //create columns from data field names
+    columns: [
+      {
+        title: "Material",
+        field: "material",
+        sorter: "string",
+      },
+      {
+        title: "Percent",
+        field: "percent",
+      },
+      {
+        title: "Cost",
+        field: "cost",
+        sorter: "number",
+      },
+    ],
+    // rowFormatter: function (row) {
+    //   var element = row.getElement();
+    //   var arrow = document.createElement("div");
+    //   arrow.className = "tabulator-arrow";
+    //   element.insertBefore(arrow, element.firstChild);
+
+    //   // Add click event listener to each row
+    //   element.addEventListener("click", function () {
+    //     if (row.isExpanded()) {
+    //       row.contract();
+    //     } else {
+    //       row.expand();
+    //     }
+    //   });
+    // },
+  });
+
+  //initialize table
+
+  table.on("rowClick", function (e, row) {
+    onRowSelected(row.getData());
+  });
+
+  global_cost_table = table;
+  return table;
+}
+async function costUpdate(row_id, row_price) {
+  await fetch("/update/" + row_id, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ price: row_price }),
+  })
+    .then((response) => response.json()) // Parse response data as JSON
+    .then((data) => {
+      console.log("Server response:", data);
+      console.log("Server is up");
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      console.log("Server is down!!");
+    });
+}
+function search(viewer, propertyName, propertyValue) {
+  return new Promise(function (resolve, reject) {
+    viewer.search(propertyValue, resolve, reject, [propertyName]);
+  });
+}
+
+function getProperties(viewer, dbids, propertyName) {
+  return new Promise(function (resolve, reject) {
+    viewer.model.getBulkProperties(
+      dbids,
+      { propFilter: [propertyName] },
+      resolve,
+      reject
+    );
+  });
+}
+async function calculateCostBreakdown(viewer, materials) {
+  const summary = [];
+  let totalCost = 0;
+  // Go through all materials stored in our MongoDB database
+  for (const material of materials) {
+    const row = { material: material.material, cost: 0, percent: 0 };
+    // Find all objects that have "Material" property set to the current material name
+    const dbids = await search(viewer, "Material", material.material);
+    // Get the "Mass" property for all matching dbids
+    const results = await getProperties(viewer, dbids, "Mass");
+    // Compute the total mass and price
+    for (const result of results) {
+      const mass = result.properties[0].displayValue;
+      row.cost += mass * material.price;
+      totalCost += mass * material.price;
+    }
+    summary.push(row);
+  }
+
+  for (const row of summary) {
+    row.percent = (row.cost / totalCost) * 100;
+  }
+
+  return summary;
+}
+
+export async function initPieChart(viewer, data) {
+  const breakdown = await calculateCostBreakdown(viewer, data);
+  console.log(breakdown);
+  var xValues = [];
+  var yValues = [];
+  let barColors = [
+    "#b91d47",
+    "#00aba9",
+    "#2b5797",
+    "#e8c3b9",
+    "#1e7145",
+    "#d496a7",
+    "#820263",
+    "#a7c957",
+  ];
+
+  const canvas = document.getElementById("chart-cost");
+  const costChart = new Chart(canvas.getContext("2d"), {
+    type: "pie",
+    data: {
+      labels: breakdown.map((e) => e.material),
+      datasets: [
+        {
+          backgroundColor: barColors,
+          data: breakdown.map((e) => e.percent),
+        },
+      ],
+    },
+    options: {
+      title: {
+        display: true,
+        text: "Cost Breakdown",
+      },
+    },
+  });
+  costChart.config.options.onClick = (ev, items) => {
+    if (items.length === 1) {
+      const index = items[0].index;
+      const material = breakdown[index].material;
+      viewer.search(material, function (dbIds) {
+        viewer.fitToView(dbIds);
+        viewer.isolate(dbIds);
+      });
+      console.log(ev, items);
+    }
+  };
+}
