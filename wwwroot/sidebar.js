@@ -4,8 +4,9 @@ var global_cost_table;
 //define data array
 export async function initMaterialsTable(data, onRowSelected) {
   //initialize table
-  const table = new Tabulator("#table-materials", {
+  const table = new Tabulator("#materials-table", {
     layout: "fitColumns",
+    height:"100%",
     data: data, //assign data to table
     // autoColumns: true, //create columns from data field names
     columns: [
@@ -80,7 +81,8 @@ export async function initMaterialsTable(data, onRowSelected) {
 export async function initCostBreakdownTable(viewer, data, onRowSelected) {
   const breakdown = await calculateCostBreakdown(viewer, data);
   //initialize table
-  const table = new Tabulator("#table-cost", {
+  const table = new Tabulator("#breakdown-table", {
+    height:"100%",
     layout: "fitColumns",
     data: breakdown, //assign data to table
     // autoColumns: true, //create columns from data field names
@@ -200,7 +202,7 @@ export async function initPieChart(viewer, data) {
     "#a7c957",
   ];
 
-  const canvas = document.getElementById("chart-cost");
+  const canvas = document.getElementById("breakdown-chart-canvas");
   const costChart = new Chart(canvas.getContext("2d"), {
     type: "pie",
     data: {
@@ -213,6 +215,7 @@ export async function initPieChart(viewer, data) {
       ],
     },
     options: {
+      maintainAspectRatio: false,
       title: {
         display: true,
         text: "Cost Breakdown",

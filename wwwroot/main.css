@@ -37,21 +37,19 @@ html {
   width: 25%;
 }
 
-/* Use flexbox for sidebar */
 #sidebar {
+  position: absolute;
   top: 3em;
   bottom: 0;
   right: 0;
   width: 40%;
-  position: absolute;
   display: flex;
-  flex-direction: column;
+  flex-flow: column;
 }
 
-/* Each section takes up equal space */
 #sidebar .section {
-  height: 100%;
-  flex: 1;
+  min-height: 0;
+  flex: 1 1 0px;
 }
 
 #header > * {
