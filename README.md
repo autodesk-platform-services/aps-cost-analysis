@@ -1,4 +1,4 @@
-# aps-simple-viewer-nodejs
+# aps-rcdb
 
 ![platforms](https://img.shields.io/badge/platform-windows%20%7C%20osx%20%7C%20linux-lightgray.svg)
 [![node.js](https://img.shields.io/badge/Node.js-16.16-blue.svg)](https://nodejs.org)
@@ -18,7 +18,7 @@ from https://tutorials.autodesk.io.
 - [APS credentials](https://forge.autodesk.com/en/docs/oauth/v2/tutorials/create-app)
 - [Node.js](https://nodejs.org) (we recommend the Long Term Support version)
 - Terminal (for example, [Windows Command Prompt](https://en.wikipedia.org/wiki/Cmd.exe)
-or [macOS Terminal](https://support.apple.com/guide/terminal/welcome/mac))
+  or [macOS Terminal](https://support.apple.com/guide/terminal/welcome/mac))
 
 ### Setup & Run
 
@@ -31,8 +31,8 @@ or [macOS Terminal](https://support.apple.com/guide/terminal/welcome/mac))
 - Run the server: `npm start`
 
 > When using [Visual Studio Code](https://code.visualstudio.com),
-you can specify the env. variables listed above in a _.env_ file in this
-folder, and run & debug the application directly from the editor.
+> you can specify the env. variables listed above in a _.env_ file in this
+> folder, and run & debug the application directly from the editor.
 
 ## Troubleshooting
 
