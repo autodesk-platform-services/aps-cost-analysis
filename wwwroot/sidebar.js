@@ -40,7 +40,7 @@ export async function initMaterialsTable(data, onRowSelected) {
   table.on("cellEdited", async (cell) => {
     const rowdata = cell.getData();
     const row_id = rowdata._id;
-    alert(row_id);
+    // alert(row_id);
     const row_price = rowdata.price;
     costUpdate(row_id, row_price);
     const response = await fetch("/cost");
@@ -61,7 +61,7 @@ export async function initMaterialsTable(data, onRowSelected) {
 
     await initPieChart(getViewer(), data);
 
-    alert(row_price);
+    // alert(row_price);
   });
   table.on("rowClick", function (e, row) {
     onRowSelected(row.getData());
