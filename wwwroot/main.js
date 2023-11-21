@@ -7,6 +7,8 @@ import {
 
 const params = new URLSearchParams(window.location.search);
 const urn = params.get("urn");
+const property = params.get("property");
+
 const response = await fetch("/cost");
 if (!response.ok) {
   alert("Couldnt read the data");
@@ -24,7 +26,7 @@ initViewer(document.getElementById("preview")).then(async (viewer) => {
           viewer.isolate(dbIds);
         });
       });
-      initCostBreakdownTable(viewer, data, function (obj) {
+      initCostBreakdownTable(viewer, data, property, function (obj) {
         viewer.search(obj.material, function (dbIds) {
           viewer.fitToView(dbIds);
           viewer.isolate(dbIds);

@@ -113,3 +113,7 @@ html {
 .collapsible-row.collapsed .tabulator-arrow::before {
   content: "\25BC";
 }
+.gallery-image:hover {
+  border: 2px solid black;
+  opacity: 0.8;
+}

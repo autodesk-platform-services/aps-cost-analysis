@@ -1,7 +1,8 @@
 import { getViewer } from "./viewer.js";
 let global_cost_table;
 let costChart;
-
+const params = new URLSearchParams(window.location.search);
+const property = params.get("property");
 //define data array
 export async function initMaterialsTable(data, onRowSelected) {
   //initialize table
@@ -48,7 +49,7 @@ export async function initMaterialsTable(data, onRowSelected) {
     }
     const data = await response.json();
 
-    const breakdown = await calculateCostBreakdown(getViewer(), data);
+    const breakdown = await calculateCostBreakdown(getViewer(), data, property);
     //$("#table-cost").tabulator("replaceData", breakdown);
     global_cost_table.replaceData(breakdown);
 
@@ -62,8 +63,13 @@ export async function initMaterialsTable(data, onRowSelected) {
 
   return table;
 }
-export async function initCostBreakdownTable(viewer, data, onRowSelected) {
-  const breakdown = await calculateCostBreakdown(viewer, data);
+export async function initCostBreakdownTable(
+  viewer,
+  data,
+  property,
+  onRowSelected
+) {
+  const breakdown = await calculateCostBreakdown(viewer, data, property);
   //initialize table
   const table = new Tabulator("#breakdown-table", {
     height: "100%",
@@ -131,23 +137,40 @@ function getProperties(viewer, dbids, propertyName) {
     );
   });
 }
-async function calculateCostBreakdown(viewer, materials) {
+async function calculateCostBreakdown(viewer, materials, property) {
   const summary = [];
   let totalCost = 0;
   // Go through all materials stored in our MongoDB database
-  for (const material of materials) {
-    const row = { material: material.material, cost: 0, percent: 0 };
-    // Find all objects that have "Material" property set to the current material name
-    const dbids = await search(viewer, "Material", material.material);
-    // Get the "Mass" property for all matching dbids
-    const results = await getProperties(viewer, dbids, "Mass");
-    // Compute the total mass and price
-    for (const result of results) {
-      const mass = result.properties[0].displayValue;
-      row.cost += mass * material.price;
-      totalCost += mass * material.price;
+  if (property == "mp") {
+    for (const material of materials) {
+      const row = { material: material.material, cost: 0, percent: 0 };
+      // Find all objects that have "Material" property set to the current material name
+      const dbids = await search(viewer, "Material", material.material);
+      // Get the "Mass" property for all matching dbids
+      const results = await getProperties(viewer, dbids, "Mass");
+      // Compute the total mass and price
+      for (const result of results) {
+        const mass = result.properties[0].displayValue;
+        row.cost += mass * material.price;
+        totalCost += mass * material.price;
+      }
+      summary.push(row);
     }
-    summary.push(row);
+  } else {
+    for (const material of materials) {
+      const row = { material: material.material, cost: 0, percent: 0 };
+      // Find all objects that have "Material" property set to the current material name
+      const dbids = await search(viewer, "Material", material.material);
+      // Get the "Mass" property for all matching dbids
+      const results = await getProperties(viewer, dbids, "Volume");
+      // Compute the total mass and price
+      for (const result of results) {
+        const volume = result.properties[0].displayValue;
+        row.cost += volume * material.price;
+        totalCost += volume * material.price;
+      }
+      summary.push(row);
+    }
   }
 
   for (const row of summary) {
@@ -162,7 +185,7 @@ export async function initPieChart(viewer, data) {
     costChart.destroy();
   }
 
-  const breakdown = await calculateCostBreakdown(viewer, data);
+  const breakdown = await calculateCostBreakdown(viewer, data, property);
   console.log(breakdown);
 
   var xValues = [];
