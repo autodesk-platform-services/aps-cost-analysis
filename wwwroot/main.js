@@ -20,12 +20,29 @@ initViewer(document.getElementById("preview")).then(async (viewer) => {
   viewer.addEventListener(
     Autodesk.Viewing.GEOMETRY_LOADED_EVENT,
     async function () {
-      initMaterialsTable(data, function (obj) {
-        viewer.search(obj.material, function (dbIds) {
-          viewer.fitToView(dbIds);
-          viewer.isolate(dbIds);
-        });
-      });
+      initMaterialsTable(
+        data,
+        function (obj) {
+          viewer.search(obj.material, function (dbIds) {
+            viewer.fitToView(dbIds);
+            viewer.isolate(dbIds);
+          });
+        },
+        function (obj) {
+          initCostBreakdownTable(
+            viewer,
+            data,
+            materialProperty,
+            unitProperty,
+            function (obj) {
+              viewer.search(obj.material, function (dbIds) {
+                viewer.fitToView(dbIds);
+                viewer.isolate(dbIds);
+              });
+            }
+          );
+        }
+      );
       initCostBreakdownTable(
         viewer,
         data,

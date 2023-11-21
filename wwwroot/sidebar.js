@@ -5,7 +5,11 @@ const params = new URLSearchParams(window.location.search);
 const materialProperty = params.get("material-property") || "Material";
 const unitProperty = params.get("unit-property") || "Mass";
 //define data array
-export async function initMaterialsTable(data, onRowSelected) {
+export async function initMaterialsTable(
+  data,
+  onRowSelected,
+  onTableDataChanged
+) {
   //initialize table
   const table = new Tabulator("#materials-table", {
     layout: "fitColumns",
@@ -57,8 +61,8 @@ export async function initMaterialsTable(data, onRowSelected) {
       unitProperty
     );
     //$("#table-cost").tabulator("replaceData", breakdown);
-    global_cost_table.replaceData(breakdown);
-
+    // global_cost_table.replaceData(breakdown);
+    onTableDataChanged(breakdown);
     await initPieChart(getViewer(), data);
 
     // alert(row_price);
