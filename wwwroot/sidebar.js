@@ -98,21 +98,23 @@ export async function initCostBreakdownTable(viewer, data, onRowSelected) {
   return table;
 }
 async function costUpdate(row_id, row_price) {
-  await fetch("/update/" + row_id, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ price: row_price }),
-  })
-    .then((response) => response.json()) // Parse response data as JSON
-    .then((data) => {
-      console.log("Server response:", data);
-      console.log("Server is up");
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      console.log("Server is down!!");
+  try {
+    const response = await fetch("/update/" + row_id, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ price: row_price }),
     });
+
+    const data = await response.json(); // Parse response data as JSON
+
+    console.log("Server response:", data);
+    console.log("Server is up");
+  } catch (error) {
+    console.error("Error:", error);
+    console.log("Server is down!!");
+  }
 }
+
 function search(viewer, propertyName, propertyValue) {
   return new Promise(function (resolve, reject) {
     viewer.search(propertyValue, resolve, reject, [propertyName]);

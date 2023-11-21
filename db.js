@@ -1,37 +1,36 @@
 const { MongoClient, ObjectId } = require("mongodb");
 const { MONGODB_URL } = require("./config.js");
-// or as an es module:
-// import { MongoClient } from 'mongodb'
 
 // Connection URL
+const client = new MongoClient(MONGODB_URL);
 
 // Database Name
 const dbName = "rcdb";
-const collection_name = "cost";
-//dbName.grantRolesToUser("test_user", [{ role: "readWrite", db: "rcdb" }])
-async function getCost() {
-  const client = new MongoClient(MONGODB_URL);
-  // Use connect method to connect to the server
-  await client.connect();
-  const db = client.db(dbName);
-  const collection = db.collection(collection_name);
+const collectionName = "cost";
 
-  // the following code examples can be pasted here...
+// Connect to the MongoDB server
+async function connect() {
+  await client.connect();
+}
+
+// Close the MongoDB connection
+async function close() {
+  await client.close();
+}
+
+async function getCost() {
+  const db = client.db(dbName);
+  const collection = db.collection(collectionName);
+
   const findResult = await collection.find({}).toArray();
   console.log("Found documents =>", findResult);
-  client.close();
   return findResult;
 }
 
 async function updateCost(rowId, updatedPrice) {
-  const client = new MongoClient(MONGODB_URL);
-  // Use connect method to connect to the server
-
-  await client.connect();
   const db = client.db(dbName);
-  const collection = db.collection(collection_name);
+  const collection = db.collection(collectionName);
 
-  // the following code examples can be pasted here...
   try {
     const updateResult = await collection.updateOne(
       { _id: new ObjectId(rowId) },
@@ -42,9 +41,7 @@ async function updateCost(rowId, updatedPrice) {
     return updateResult;
   } catch (err) {
     console.log(err);
-  } finally {
-    client.close();
   }
 }
 
-module.exports = { getCost, updateCost };
+module.exports = { connect, close, getCost, updateCost };
