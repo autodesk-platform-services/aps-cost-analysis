@@ -2,7 +2,8 @@ import { getViewer } from "./viewer.js";
 let global_cost_table;
 let costChart;
 const params = new URLSearchParams(window.location.search);
-const property = params.get("property");
+const materialProperty = params.get("material-property") || "Material";
+const unitProperty = params.get("unit-property") || "Mass";
 //define data array
 export async function initMaterialsTable(data, onRowSelected) {
   //initialize table
@@ -49,7 +50,12 @@ export async function initMaterialsTable(data, onRowSelected) {
     }
     const data = await response.json();
 
-    const breakdown = await calculateCostBreakdown(getViewer(), data, property);
+    const breakdown = await calculateCostBreakdown(
+      getViewer(),
+      data,
+      materialProperty,
+      unitProperty
+    );
     //$("#table-cost").tabulator("replaceData", breakdown);
     global_cost_table.replaceData(breakdown);
 
@@ -66,10 +72,16 @@ export async function initMaterialsTable(data, onRowSelected) {
 export async function initCostBreakdownTable(
   viewer,
   data,
-  property,
+  materialProperty,
+  unitProperty,
   onRowSelected
 ) {
-  const breakdown = await calculateCostBreakdown(viewer, data, property);
+  const breakdown = await calculateCostBreakdown(
+    viewer,
+    data,
+    materialProperty,
+    unitProperty
+  );
   //initialize table
   const table = new Tabulator("#breakdown-table", {
     height: "100%",
@@ -137,11 +149,16 @@ function getProperties(viewer, dbids, propertyName) {
     );
   });
 }
-async function calculateCostBreakdown(viewer, materials, property) {
+async function calculateCostBreakdown(
+  viewer,
+  materials,
+  materialProperty,
+  unitProperty
+) {
   const summary = [];
   let totalCost = 0;
   // Go through all materials stored in our MongoDB database
-  if (property == "mp") {
+  if (materialProperty == "Material" && unitProperty == "Mass") {
     for (const material of materials) {
       const row = { material: material.material, cost: 0, percent: 0 };
       // Find all objects that have "Material" property set to the current material name
@@ -156,7 +173,7 @@ async function calculateCostBreakdown(viewer, materials, property) {
       }
       summary.push(row);
     }
-  } else {
+  } else if (materialProperty == "Material" && unitProperty == "Volume") {
     for (const material of materials) {
       const row = { material: material.material, cost: 0, percent: 0 };
       // Find all objects that have "Material" property set to the current material name
@@ -185,7 +202,12 @@ export async function initPieChart(viewer, data) {
     costChart.destroy();
   }
 
-  const breakdown = await calculateCostBreakdown(viewer, data, property);
+  const breakdown = await calculateCostBreakdown(
+    viewer,
+    data,
+    materialProperty,
+    unitProperty
+  );
   console.log(breakdown);
 
   var xValues = [];
