@@ -1,12 +1,13 @@
 import { getViewer } from "./viewer.js";
-var global_cost_table;
+let global_cost_table;
+let costChart;
 
 //define data array
 export async function initMaterialsTable(data, onRowSelected) {
   //initialize table
   const table = new Tabulator("#materials-table", {
     layout: "fitColumns",
-    height:"100%",
+    height: "100%",
     data: data, //assign data to table
     // autoColumns: true, //create columns from data field names
     columns: [
@@ -33,21 +34,6 @@ export async function initMaterialsTable(data, onRowSelected) {
         field: "currency",
       },
     ],
-    // rowFormatter: function (row) {
-    //   var element = row.getElement();
-    //   var arrow = document.createElement("div");
-    //   arrow.className = "tabulator-arrow";
-    //   element.insertBefore(arrow, element.firstChild);
-
-    //   // Add click event listener to each row
-    //   element.addEventListener("click", function () {
-    //     if (row.isExpanded()) {
-    //       row.contract();
-    //     } else {
-    //       row.expand();
-    //     }
-    //   });
-    // },
   });
   table.on("cellEdited", async (cell) => {
     const rowdata = cell.getData();
@@ -55,9 +41,6 @@ export async function initMaterialsTable(data, onRowSelected) {
     alert(row_id);
     const row_price = rowdata.price;
     costUpdate(row_id, row_price);
-
-    const params = new URLSearchParams(window.location.search);
-    const urn = params.get("urn");
     const response = await fetch("/cost");
     if (!response.ok) {
       alert("Couldnt read the data");
@@ -68,7 +51,8 @@ export async function initMaterialsTable(data, onRowSelected) {
     const breakdown = await calculateCostBreakdown(getViewer(), data);
     //$("#table-cost").tabulator("replaceData", breakdown);
     global_cost_table.replaceData(breakdown);
-    // initPieChart(getViewer(), data);
+
+    await initPieChart(getViewer(), data);
 
     alert(row_price);
   });
@@ -82,7 +66,7 @@ export async function initCostBreakdownTable(viewer, data, onRowSelected) {
   const breakdown = await calculateCostBreakdown(viewer, data);
   //initialize table
   const table = new Tabulator("#breakdown-table", {
-    height:"100%",
+    height: "100%",
     layout: "fitColumns",
     data: breakdown, //assign data to table
     // autoColumns: true, //create columns from data field names
@@ -102,21 +86,6 @@ export async function initCostBreakdownTable(viewer, data, onRowSelected) {
         sorter: "number",
       },
     ],
-    // rowFormatter: function (row) {
-    //   var element = row.getElement();
-    //   var arrow = document.createElement("div");
-    //   arrow.className = "tabulator-arrow";
-    //   element.insertBefore(arrow, element.firstChild);
-
-    //   // Add click event listener to each row
-    //   element.addEventListener("click", function () {
-    //     if (row.isExpanded()) {
-    //       row.contract();
-    //     } else {
-    //       row.expand();
-    //     }
-    //   });
-    // },
   });
 
   //initialize table
@@ -187,8 +156,13 @@ async function calculateCostBreakdown(viewer, materials) {
 }
 
 export async function initPieChart(viewer, data) {
+  if (costChart) {
+    costChart.destroy();
+  }
+
   const breakdown = await calculateCostBreakdown(viewer, data);
   console.log(breakdown);
+
   var xValues = [];
   var yValues = [];
   let barColors = [
@@ -203,7 +177,11 @@ export async function initPieChart(viewer, data) {
   ];
 
   const canvas = document.getElementById("breakdown-chart-canvas");
-  const costChart = new Chart(canvas.getContext("2d"), {
+  if (costChart) {
+    costChart.destroy();
+  }
+
+  costChart = new Chart(canvas.getContext("2d"), {
     type: "pie",
     data: {
       labels: breakdown.map((e) => e.material),
