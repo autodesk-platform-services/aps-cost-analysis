@@ -8,7 +8,8 @@ const unitProperty = params.get("unit-property") || "Mass";
 export async function initMaterialsTable(
   data,
   onRowSelected,
-  onTableDataChanged
+  onTableDataChanged,
+  onPieChartChanged
 ) {
   //initialize table
   const table = new Tabulator("#materials-table", {
@@ -63,7 +64,7 @@ export async function initMaterialsTable(
     //$("#table-cost").tabulator("replaceData", breakdown);
     // global_cost_table.replaceData(breakdown);
     onTableDataChanged(breakdown);
-    await initPieChart(getViewer(), data);
+    onPieChartChanged(breakdown);
 
     // alert(row_price);
   });

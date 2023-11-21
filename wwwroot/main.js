@@ -41,6 +41,9 @@ initViewer(document.getElementById("preview")).then(async (viewer) => {
               });
             }
           );
+        },
+        function (obj1) {
+          initPieChart(viewer, data);
         }
       );
       initCostBreakdownTable(
