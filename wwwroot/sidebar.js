@@ -185,6 +185,7 @@ async function calculateCostBreakdown(
         row.cost += mass * material.price;
         totalCost += mass * material.price;
       }
+      row.cost = row.cost.toFixed(2);
       summary.push(row);
     }
   } else if (materialProperty == "Material" && unitProperty == "Volume") {
@@ -200,12 +201,14 @@ async function calculateCostBreakdown(
         row.cost += volume * material.price;
         totalCost += volume * material.price;
       }
+      row.cost = row.cost.toFixed(2);
       summary.push(row);
     }
   }
 
   for (const row of summary) {
     row.percent = (row.cost / totalCost) * 100;
+    row.percent = row.percent.toFixed(2);
   }
 
   return summary;
