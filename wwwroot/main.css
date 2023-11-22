@@ -117,3 +117,15 @@ html {
   border: 2px solid black;
   opacity: 0.8;
 }
+
+@media (max-width: 600px) {
+  /* Styles for screens with a maximum width of 600px */
+}
+
+@media (min-width: 601px) and (max-width: 1200px) {
+  /* Styles for screens with a minimum width of 601px and a maximum width of 1200px */
+}
+
+@media (min-width: 1201px) {
+  /* Styles for screens with a minimum width of 1201px */
+}

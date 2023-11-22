@@ -14,7 +14,8 @@ export async function initMaterialsTable(
   //initialize table
   const table = new Tabulator("#materials-table", {
     layout: "fitColumns",
-    height: "100%",
+    maxHeight: "100%",
+
     data: data, //assign data to table
     // autoColumns: true, //create columns from data field names
     columns: [
@@ -39,6 +40,13 @@ export async function initMaterialsTable(
       {
         title: "Currency",
         field: "currency",
+        editor: "list",
+        editorParams: {
+          autocomplete: "true",
+          allowEmpty: true,
+          listOnEmpty: true,
+          valuesLookup: true,
+        },
       },
     ],
   });
@@ -89,7 +97,8 @@ export async function initCostBreakdownTable(
   );
   //initialize table
   const table = new Tabulator("#breakdown-table", {
-    height: "100%",
+    maxHeight: "100%",
+
     layout: "fitColumns",
     data: breakdown, //assign data to table
     // autoColumns: true, //create columns from data field names
