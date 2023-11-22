@@ -62,6 +62,7 @@ html {
 #header .title {
   flex: 1 0 auto;
   height: auto;
+  font-weight: bold;
 }
 
 /* Remove absolute positioning and set height to 100% so each div takes up the whole section */
