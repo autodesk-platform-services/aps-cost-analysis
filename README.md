@@ -22,20 +22,14 @@ This is an APS Responsive Connected Database: A responsive javascript based web 
 
 Install [MongoDB](https://www.mongodb.com/), start an instance locally and create a database - we recommend to follow the tutorial [here](https://docs.mongodb.com/manual/tutorial/getting-started/) for detailed instructions.
 
-Import the four data collections using the JSON files [here](./resources/db) to your database, we recommend to use [MongoDB Compass](https://www.mongodb.com/products/compass) or [Studio3T](https://studio3t.com/download/) as client tools for this task. See [here](https://docs.mongodb.com/compass/master/import-export/) and [here](https://studio3t.com/knowledge-base/articles/mongodb-import-json-csv-bson/) for instructions to import data. _Note: if you use MongoDB Compass to import the data you will need to minify the JSON objects into one lines otherwise the tool wouldn't be able to parse the JSON objects correctly_
-
-Make sure your database collections look like below:
+Import the four data collections using the JSON files [here](./resources/db) to your database, we recommend to use [MongoDB Compass](https://www.mongodb.com/products/compass) or [Studio3T](https://studio3t.com/download/) as client tools for this task.
 
 ```
    YourDatabase
-   |
-   |-------------rcdb.models
-   |-------------rcdb.materials
-   |-------------gallery.models
-   |-------------configurator.models
-```
 
-Once you are done, be sure to specify the connection string or in the configuration JSON file or as environment variables - see instructions in the next section for details.
+   |-------------rcdb.materials
+
+```
 
 If you would like run the sample w/o setting up MongoDB, see how to run the Extension Gallery as the backend in `tips and tricks` section later.
 
