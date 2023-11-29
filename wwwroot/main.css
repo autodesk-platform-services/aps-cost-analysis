@@ -48,6 +48,8 @@ html {
 }
 
 #sidebar .section {
+  padding-left: 20px;
+  padding-bottom: 10px;
   min-height: 0;
   flex: 1 1 0px;
 }
