@@ -5,9 +5,7 @@
 [![npm](https://img.shields.io/badge/npm-8.11-blue.svg)](https://www.npmjs.com/)
 [![license](https://img.shields.io/:license-mit-green.svg)](https://opensource.org/licenses/MIT)
 
-[Autodesk Platform Services](https://aps.autodesk.com) application built by following
-the [Simple Viewer](https://tutorials.autodesk.io/tutorials/simple-viewer/) tutorial
-from https://tutorials.autodesk.io.
+This is an APS Responsive Connected Database: A responsive javascript based web application that showcases the use of APS Viewer and APS web services, working in a connected environment with integrated data from multiple databases.
 
 ![screenshot](screenshot.png)
 
@@ -20,6 +18,27 @@ from https://tutorials.autodesk.io.
 - Terminal (for example, [Windows Command Prompt](https://en.wikipedia.org/wiki/Cmd.exe)
   or [macOS Terminal](https://support.apple.com/guide/terminal/welcome/mac))
 
+### MongoDB database
+
+Install [MongoDB](https://www.mongodb.com/), start an instance locally and create a database - we recommend to follow the tutorial [here](https://docs.mongodb.com/manual/tutorial/getting-started/) for detailed instructions.
+
+Import the four data collections using the JSON files [here](./resources/db) to your database, we recommend to use [MongoDB Compass](https://www.mongodb.com/products/compass) or [Studio3T](https://studio3t.com/download/) as client tools for this task. See [here](https://docs.mongodb.com/compass/master/import-export/) and [here](https://studio3t.com/knowledge-base/articles/mongodb-import-json-csv-bson/) for instructions to import data. _Note: if you use MongoDB Compass to import the data you will need to minify the JSON objects into one lines otherwise the tool wouldn't be able to parse the JSON objects correctly_
+
+Make sure your database collections look like below:
+
+```
+   YourDatabase
+   |
+   |-------------rcdb.models
+   |-------------rcdb.materials
+   |-------------gallery.models
+   |-------------configurator.models
+```
+
+Once you are done, be sure to specify the connection string or in the configuration JSON file or as environment variables - see instructions in the next section for details.
+
+If you would like run the sample w/o setting up MongoDB, see how to run the Extension Gallery as the backend in `tips and tricks` section later.
+
 ### Setup & Run
 
 - Clone this repository
@@ -27,6 +46,7 @@ from https://tutorials.autodesk.io.
 - Setup environment variables:
   - `APS_CLIENT_ID` - your APS application client ID
   - `APS_CLIENT_SECRET` - your APS application client secret
+  - `MONGODB_URL` - your MONGODB_URL
   - `APS_BUCKET` (optional) - name of APS bucket to store your designs in
 - Run the server: `npm start`
 
