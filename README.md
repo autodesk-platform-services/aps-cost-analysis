@@ -22,8 +22,6 @@ This is an APS Responsive Connected Database: A responsive javascript based web 
 
 Install [MongoDB](https://www.mongodb.com/), start an instance locally and create a database - we recommend to follow the tutorial [here](https://docs.mongodb.com/manual/tutorial/getting-started/) for detailed instructions.
 
-Import the four data collections using the JSON files [here](./resources/db) to your database, we recommend to use [MongoDB Compass](https://www.mongodb.com/products/compass) or [Studio3T](https://studio3t.com/download/) as client tools for this task.
-
 ```
    YourDatabase
 
