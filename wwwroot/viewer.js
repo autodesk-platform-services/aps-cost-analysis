@@ -1,8 +1,6 @@
-/// import * as Autodesk from "@types/forge-viewer";
-var viewer;
 async function getAccessToken(callback) {
   try {
-    const resp = await fetch("/api/auth/token");
+    const resp = await fetch("/auth/token");
     if (!resp.ok) {
       throw new Error(await resp.text());
     }
@@ -17,13 +15,9 @@ async function getAccessToken(callback) {
 export function initViewer(container) {
   return new Promise(function (resolve, reject) {
     Autodesk.Viewing.Initializer({ getAccessToken }, function () {
-      const config = {
-        extensions: ["Autodesk.DocumentBrowser"],
-      };
-      viewer = new Autodesk.Viewing.GuiViewer3D(container, config);
+      const viewer = new Autodesk.Viewing.GuiViewer3D(container);
       viewer.start();
       viewer.setTheme("light-theme");
-
       resolve(viewer);
     });
   });
@@ -37,7 +31,6 @@ export function loadModel(viewer, urn) {
     function onDocumentLoadFailure(code, message, errors) {
       reject({ code, message, errors });
     }
-    viewer.setLightPreset(0);
     Autodesk.Viewing.Document.load(
       "urn:" + urn,
       onDocumentLoadSuccess,
@@ -46,6 +39,19 @@ export function loadModel(viewer, urn) {
   });
 }
 
-export function getViewer() {
-  return viewer;
+export function search(viewer, propertyName, propertyValue) {
+  return new Promise(function (resolve, reject) {
+    viewer.search(propertyValue, resolve, reject, [propertyName]);
+  });
+}
+
+export function getProperties(viewer, dbids, propertyName) {
+  return new Promise(function (resolve, reject) {
+    viewer.model.getBulkProperties(
+      dbids,
+      { propFilter: [propertyName] },
+      resolve,
+      reject
+    );
+  });
 }
