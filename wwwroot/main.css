@@ -66,40 +66,20 @@ html {
   height: auto;
   font-weight: bold;
 }
-.animation-overview .box {
-  display: inline-block;
-  width: 200px;
-  height: 200px;
-  background-color: var(--sl-color-primary-600);
-  margin: 1.5rem;
-}
-/* Remove absolute positioning and set height to 100% so each div takes up the whole section */
+
 .gallery-image {
   height: 200px;
   width: 200px;
   padding: 10px;
-}
-.border-button {
-  border: solid 10px #6c6567;
-  clip-path: polygon(
-    calc(0% + 5px) calc(0% + 5px),
-    calc(100% - 5px) calc(0% + 5px),
-    calc(100% - 5px) calc(100% - 5px),
-    calc(0% + 5px) calc(100% - 5px)
-  );
-  transition: clip-path 0.6s linear;
-}
-
-.border-button:hover {
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
 
 .gallery-image:hover {
   border: 2px solid black;
   opacity: 0.8;
 }
-.h2 {
-  text-align: center;
+
+a {
+  text-decoration: none;
 }
 
 @media (max-width: 600px) {
