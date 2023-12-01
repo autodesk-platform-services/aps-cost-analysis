@@ -93,42 +93,13 @@ html {
 .border-button:hover {
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
-.minimize,
-.maximize {
-  margin-left: 1px;
-  cursor: pointer;
 
-  border: none;
-  background-color: #ddd;
-  color: #333;
-}
-
-.minimize:hover,
-.maximize:hover {
-  background-color: #bbb;
-}
-.collapsible-row {
-  cursor: pointer;
-}
-
-.collapsible-row .tabulator-arrow {
-  transition: transform 0.2s;
-}
-
-.collapsible-row.collapsed .tabulator-arrow {
-  transform: rotate(-90deg);
-}
-
-.collapsible-row .tabulator-arrow::before {
-  content: "\25B6";
-}
-
-.collapsible-row.collapsed .tabulator-arrow::before {
-  content: "\25BC";
-}
 .gallery-image:hover {
   border: 2px solid black;
   opacity: 0.8;
+}
+.h2 {
+  text-align: center;
 }
 
 @media (max-width: 600px) {
