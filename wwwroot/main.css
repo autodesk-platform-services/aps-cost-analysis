@@ -31,10 +31,9 @@ html {
 }
 
 #gallery {
-  top: 15em;
+  top: 10em;
   bottom: 0;
-  left: 40em;
-  width: 25%;
+  left: 30em;
 }
 
 #sidebar {
@@ -67,9 +66,19 @@ html {
   height: auto;
   font-weight: bold;
 }
-
+.animation-overview .box {
+  display: inline-block;
+  width: 200px;
+  height: 200px;
+  background-color: var(--sl-color-primary-600);
+  margin: 1.5rem;
+}
 /* Remove absolute positioning and set height to 100% so each div takes up the whole section */
-
+.gallery-image {
+  height: 200px;
+  width: 200px;
+  padding: 10px;
+}
 .border-button {
   border: solid 10px #6c6567;
   clip-path: polygon(
