@@ -5,7 +5,7 @@
 [![npm](https://img.shields.io/badge/npm-8.11-blue.svg)](https://www.npmjs.com/)
 [![license](https://img.shields.io/:license-mit-green.svg)](https://opensource.org/licenses/MIT)
 
-This is an APS Responsive Connected Database: A responsive javascript based web application that showcases the use of APS Viewer and APS web services, working in a connected environment with integrated data from multiple databases.
+This is an APS Responsive Connected Database: A responsive javascript based web application that showcases the use of APS Viewer and APS web services, working in a connected environment with integrated data from MONGODB database.
 
 ![screenshot](screenshot.png)
 
@@ -20,12 +20,12 @@ This is an APS Responsive Connected Database: A responsive javascript based web 
 
 ### MongoDB database
 
-Install [MongoDB](https://www.mongodb.com/), start an instance locally and create a database - we recommend to follow the tutorial [here](https://docs.mongodb.com/manual/tutorial/getting-started/) for detailed instructions.
+Install [MongoDB](https://www.mongodb.com/), start an instance locally and create a database - we recommend to follow the tutorial [here](https://docs.mongodb.com/manual/tutorial/getting-started/) for detailed instructions & then create collection.
 
 ```
    YourDatabase
 
-   |-------------rcdb.materials
+   |-------------rcdb.cost
 
 ```
 
@@ -48,7 +48,7 @@ If you would like run the sample w/o setting up MongoDB, see how to run the Exte
 
 ## Troubleshooting
 
-Please contact us via https://forge.autodesk.com/en/support/get-help.
+Please contact us via https://aps.autodesk.com/en/support/get-help.
 
 ## License
 
