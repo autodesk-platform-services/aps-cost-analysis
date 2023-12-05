@@ -23,8 +23,9 @@ export function initSidebar(onMaterialSelected, onPriceModified) {
   };
 }
 
-export function updateSidebar(materials, breakdown) {
+export function updateSidebar(materials, currency, breakdown) {
   materialsTable.replaceData(materials);
+  materialsTable.replaceData(currency);
   breakdownTable.replaceData(breakdown);
   breakdownChart.data.labels = breakdown.map((e) => e.material);
   breakdownChart.data.datasets[0].data = breakdown.map((e) => e.percent);
@@ -40,7 +41,18 @@ function initMaterialsTable() {
       { title: "Material", field: "material", sorter: "string" },
       { title: "Supplier", field: "supplier" },
       { title: "Price", field: "price", sorter: "number", editor: "number" },
-      { title: "Currency", field: "currency" },
+      {
+        title: "Currency",
+        field: "currency",
+        editor: "list",
+        sorter: "string",
+        editorParams: {
+          autocomplete: "true",
+          allowEmpty: true,
+          listOnEmpty: true,
+          valuesLookup: true,
+        },
+      },
     ],
   });
 }

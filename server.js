@@ -14,6 +14,18 @@ app.get("/material-cost", async function (req, res, next) {
     next(err);
   }
 });
+app.get("/currency", async function (req, res, next) {
+  try {
+    res.json([
+      { currency: "USD", factor: 1.0 },
+      { currency: "EUR", factor: 1.09 },
+      { currency: "GBP", factor: 1.27 },
+      { currency: "JPY", factor: 0.007 },
+    ]);
+  } catch (err) {
+    next(err);
+  }
+});
 
 app.post("/material-cost/:id", async function (req, res, next) {
   const id = req.params.id;

@@ -26,15 +26,18 @@ viewer.addEventListener(
       update();
     }
     async function update() {
-      const response = await fetch("/material-cost");
-      const materials = await response.json();
+      const response_material = await fetch("/material-cost");
+      const materials = await response_material.json();
+      const response_currency = await fetch("/currency");
+      const currency = await response_currency.json();
       const breakdown = await calculateCostBreakdown(
         viewer,
         materials,
         materialProperty,
-        unitProperty
+        unitProperty,
+        currency
       );
-      updateSidebar(materials, breakdown);
+      updateSidebar(materials, currency, breakdown);
     }
     initSidebar(onMaterialSelected, onPriceModified);
     update();
@@ -45,7 +48,8 @@ async function calculateCostBreakdown(
   viewer,
   materials,
   materialProperty,
-  unitProperty
+  unitProperty,
+  currency
 ) {
   const summary = [];
   let totalCost = 0;
@@ -55,9 +59,11 @@ async function calculateCostBreakdown(
     const results = await getProperties(viewer, dbids, unitProperty);
     for (const result of results) {
       const units = result.properties[0].displayValue;
+      console.log(currency.factor);
       row.cost += units * material.price;
       totalCost += units * material.price;
     }
+
     summary.push(row);
   }
   for (const row of summary) {
