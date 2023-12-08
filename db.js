@@ -10,11 +10,11 @@ async function getMaterialCost() {
   return results;
 }
 
-async function updateMaterialCost(id, price) {
+async function updateMaterialCost(id, price, currency) {
   const collection = client.db(databaseName).collection(collectionName);
   const result = await collection.updateOne(
     { _id: new ObjectId(id) },
-    { $set: { price: Number(price) } }
+    { $set: { price: Number(price), currency: currency } }
   );
   return result;
 }

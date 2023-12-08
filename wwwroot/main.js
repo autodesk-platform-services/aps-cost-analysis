@@ -17,29 +17,32 @@ viewer.addEventListener(
         viewer.isolate(dbids);
       });
     }
-    async function onPriceModified(id, price) {
-      await fetch("/material-cost/" + id, {
+    async function onMaterialModified(id, price, currency) {
+      await fetch("/materials/" + id, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ price }),
+        body: JSON.stringify({ price, currency }),
       });
       update();
     }
+
+    //  async function onCurrencySelect() {}
+    const response_currency = await fetch("/currencies");
+    const currencies = await response_currency.json();
     async function update() {
-      const response_material = await fetch("/material-cost");
+      const response_material = await fetch("/materials");
       const materials = await response_material.json();
-      const response_currency = await fetch("/currency");
-      const currency = await response_currency.json();
+
       const breakdown = await calculateCostBreakdown(
         viewer,
         materials,
         materialProperty,
         unitProperty,
-        currency
+        currencies
       );
-      updateSidebar(materials, currency, breakdown);
+      updateSidebar(materials, breakdown);
     }
-    initSidebar(onMaterialSelected, onPriceModified);
+    initSidebar(onMaterialSelected, onMaterialModified, currencies);
     update();
   }
 );
@@ -49,7 +52,7 @@ async function calculateCostBreakdown(
   materials,
   materialProperty,
   unitProperty,
-  currency
+  currencies
 ) {
   const summary = [];
   let totalCost = 0;
@@ -57,11 +60,15 @@ async function calculateCostBreakdown(
     const row = { material: material.material, cost: 0, percent: 0 };
     const dbids = await search(viewer, materialProperty, material.material);
     const results = await getProperties(viewer, dbids, unitProperty);
+
     for (const result of results) {
       const units = result.properties[0].displayValue;
-      console.log(currency.factor);
-      row.cost += units * material.price;
-      totalCost += units * material.price;
+      const current_currency = currencies.find(function (currency) {
+        return currency.currency == material.currency;
+      });
+
+      row.cost += units * material.price * current_currency.factor;
+      totalCost += units * material.price * current_currency.factor;
     }
 
     summary.push(row);

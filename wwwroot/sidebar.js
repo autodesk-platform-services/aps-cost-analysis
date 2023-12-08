@@ -2,14 +2,20 @@ let materialsTable;
 let breakdownTable;
 let breakdownChart;
 
-export function initSidebar(onMaterialSelected, onPriceModified) {
-  materialsTable = initMaterialsTable();
+export function initSidebar(
+  onMaterialSelected,
+  onMaterialModified,
+  currencies
+) {
+  materialsTable = initMaterialsTable(currencies);
   materialsTable.on("rowClick", (e, row) =>
     onMaterialSelected(row.getData().material)
   );
-  materialsTable.on("cellEdited", (cell) =>
-    onPriceModified(cell.getData()._id, cell.getData().price)
-  );
+  materialsTable.on("cellEdited", (cell) => {
+    const material = cell.getData();
+    onMaterialModified(material._id, material.price, material.currency);
+  });
+
   breakdownTable = initCostBreakdownTable();
   breakdownTable.on("rowClick", (e, row) =>
     onMaterialSelected(row.getData().material)
@@ -23,16 +29,16 @@ export function initSidebar(onMaterialSelected, onPriceModified) {
   };
 }
 
-export function updateSidebar(materials, currency, breakdown) {
+export function updateSidebar(materials, breakdown, currencies) {
   materialsTable.replaceData(materials);
-  materialsTable.replaceData(currency);
+  // materialsTable.updateData(currencies);
   breakdownTable.replaceData(breakdown);
   breakdownChart.data.labels = breakdown.map((e) => e.material);
   breakdownChart.data.datasets[0].data = breakdown.map((e) => e.percent);
   breakdownChart.update();
 }
 
-function initMaterialsTable() {
+function initMaterialsTable(currencies) {
   return new Tabulator("#materials-table", {
     layout: "fitColumns",
     height: "100%",
@@ -48,9 +54,10 @@ function initMaterialsTable() {
         sorter: "string",
         editorParams: {
           autocomplete: "true",
-          allowEmpty: true,
-          listOnEmpty: true,
-          valuesLookup: true,
+          defaultValue: "USD",
+          values: currencies.map(function (currency) {
+            return currency.currency;
+          }),
         },
       },
     ],

@@ -7,14 +7,14 @@ app.use(express.json());
 app.use(express.static("wwwroot"));
 app.use(require("./routes/auth.js"));
 
-app.get("/material-cost", async function (req, res, next) {
+app.get("/materials", async function (req, res, next) {
   try {
     res.json(await getMaterialCost());
   } catch (err) {
     next(err);
   }
 });
-app.get("/currency", async function (req, res, next) {
+app.get("/currencies", async function (req, res, next) {
   try {
     res.json([
       { currency: "USD", factor: 1.0 },
@@ -27,15 +27,16 @@ app.get("/currency", async function (req, res, next) {
   }
 });
 
-app.post("/material-cost/:id", async function (req, res, next) {
+app.post("/materials/:id", async function (req, res, next) {
   const id = req.params.id;
   const price = req.body.price;
-  if (!price) {
+  const currency = req.body.currency;
+  if (!price || !currency) {
     res.status(400).end("Incorrect input");
     return;
   }
   try {
-    res.json(await updateMaterialCost(id, price));
+    res.json(await updateMaterialCost(id, price, currency));
   } catch (err) {
     next(err);
   }
