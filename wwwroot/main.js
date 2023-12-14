@@ -26,9 +26,20 @@ viewer.addEventListener(
       update();
     }
 
-    //  async function onCurrencySelect() {}
     const response_currency = await fetch("/currencies");
     const currencies = await response_currency.json();
+    for (const currency of currencies) {
+      if (
+        currency.currency == "USD" ||
+        currency.currency == "GBP" ||
+        currency.currency == "EUR" ||
+        currency.currency == "JPY"
+      ) {
+      } else {
+        alert("Choose currency name among USD, GBP, EUR,JPY");
+        return;
+      }
+    }
     async function update() {
       const response_material = await fetch("/materials");
       const materials = await response_material.json();
