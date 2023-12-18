@@ -5,9 +5,9 @@
 [![npm](https://img.shields.io/badge/npm-8.11-blue.svg)](https://www.npmjs.com/)
 [![license](https://img.shields.io/:license-mit-green.svg)](https://opensource.org/licenses/MIT)
 
-This is an APS Responsive Connected Database: A responsive javascript based web application that showcases the use of APS Viewer and APS web services, working in a connected environment with integrated data from MONGODB database.
-
 ![screenshot](screenshot.png)
+
+This is an APS Responsive Connected Database: A responsive javascript based web application that showcases the use of APS Viewer and APS web services, working in a connected environment with integrated data from MONGODB database.
 
 ## Development
 
@@ -24,12 +24,11 @@ Install [MongoDB](https://www.mongodb.com/), start an instance locally and creat
 
 ```
    YourDatabase
+   Database : rcdb
+   Collection :cost
 
-   |-------------rcdb.cost
 
 ```
-
-If you would like run the sample w/o setting up MongoDB, see how to run the Extension Gallery as the backend in `tips and tricks` section later.
 
 ### Setup & Run
 
@@ -39,7 +38,6 @@ If you would like run the sample w/o setting up MongoDB, see how to run the Exte
   - `APS_CLIENT_ID` - your APS application client ID
   - `APS_CLIENT_SECRET` - your APS application client secret
   - `MONGODB_URL` - your MONGODB_URL
-  - `APS_BUCKET` (optional) - name of APS bucket to store your designs in
 - Run the server: `npm start`
 
 > When using [Visual Studio Code](https://code.visualstudio.com),

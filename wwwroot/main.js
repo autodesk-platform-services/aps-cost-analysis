@@ -18,28 +18,21 @@ viewer.addEventListener(
       });
     }
     async function onMaterialModified(id, price, currency) {
-      await fetch("/materials/" + id, {
+      const response = await fetch("/materials/" + id, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ price, currency }),
       });
+      if (response.status == 400) {
+        const message = await response.text();
+        alert(message);
+      }
       update();
     }
 
     const response_currency = await fetch("/currencies");
     const currencies = await response_currency.json();
-    for (const currency of currencies) {
-      if (
-        currency.currency == "USD" ||
-        currency.currency == "GBP" ||
-        currency.currency == "EUR" ||
-        currency.currency == "JPY"
-      ) {
-      } else {
-        alert("Choose currency name among USD, GBP, EUR,JPY");
-        return;
-      }
-    }
+
     async function update() {
       const response_material = await fetch("/materials");
       const materials = await response_material.json();

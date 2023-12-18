@@ -8,14 +8,12 @@ html {
 
 #header,
 #preview,
-#gallery,
-#overlay {
+#gallery {
   position: absolute;
   width: 100%;
 }
 
 #header {
-  width: 100%;
   height: 3em;
   display: flex;
   flex-flow: row nowrap;
@@ -31,11 +29,19 @@ html {
 }
 
 #gallery {
-  top: 10em;
+  top: 3em;
   bottom: 0;
-  left: 30em;
+  left: 0;
+  right: 0;
+  flex-flow: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
+#models {
+  flex-flow: row;
+  display: flex;
+}
 #sidebar {
   position: absolute;
   top: 3em;
