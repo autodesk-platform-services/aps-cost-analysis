@@ -99,3 +99,7 @@ a {
 @media (min-width: 1201px) {
   /* Styles for screens with a minimum width of 1201px */
 }
+
+.tabulator .tabulator-tableholder {
+  display: flex;
+}
