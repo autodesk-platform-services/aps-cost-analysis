@@ -17,7 +17,7 @@ html {
   height: 3em;
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
 }
 
@@ -38,10 +38,12 @@ html {
   justify-content: center;
   align-items: center;
 }
+
 #models {
   flex-flow: row;
   display: flex;
 }
+
 #sidebar {
   position: absolute;
   top: 3em;
@@ -68,7 +70,6 @@ html {
 }
 
 #header .title {
-  flex: 1 0 auto;
   height: auto;
   font-weight: bold;
 }
@@ -76,28 +77,11 @@ html {
 .gallery-image {
   height: 200px;
   width: 200px;
-  padding: 10px;
+  margin: 20px;
 }
 
 .gallery-image:hover {
-  border: 2px solid black;
-  opacity: 0.8;
-}
-
-a {
-  text-decoration: none;
-}
-
-@media (max-width: 600px) {
-  /* Styles for screens with a maximum width of 600px */
-}
-
-@media (min-width: 601px) and (max-width: 1200px) {
-  /* Styles for screens with a minimum width of 601px and a maximum width of 1200px */
-}
-
-@media (min-width: 1201px) {
-  /* Styles for screens with a minimum width of 1201px */
+  outline: 1px solid black;
 }
 
 .tabulator .tabulator-tableholder {
