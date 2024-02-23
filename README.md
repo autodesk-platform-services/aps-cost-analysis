@@ -24,8 +24,8 @@ Install [MongoDB](https://www.mongodb.com/), start an instance locally and creat
 
 ```
    YourDatabase
-   Database : rcdb
-   Collection :cost
+   Database : db_cost_analysis
+   Collection :cn_cost_analysis
 ```
 
 The MONGODB_URL environment variable is typically found in the environment configuration of an application. It is set in a .env file, as a system environment variable.
