@@ -31,7 +31,6 @@ export function initSidebar(
 
 export function updateSidebar(materials, breakdown, currencies) {
   materialsTable.replaceData(materials);
-  // materialsTable.updateData(currencies);
   breakdownTable.replaceData(breakdown);
   breakdownChart.data.labels = breakdown.map((e) => e.material);
   breakdownChart.data.datasets[0].data = breakdown.map((e) => e.percent);

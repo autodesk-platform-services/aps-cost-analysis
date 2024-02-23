@@ -1,4 +1,4 @@
-# aps-rcdb
+# aps-cost-analysis
 
 ![platforms](https://img.shields.io/badge/platform-windows%20%7C%20osx%20%7C%20linux-lightgray.svg)
 [![node.js](https://img.shields.io/badge/Node.js-16.16-blue.svg)](https://nodejs.org)
@@ -7,7 +7,7 @@
 
 ![screenshot](screenshot.png)
 
-This is an APS Responsive Connected Database: A responsive javascript based web application that showcases the use of APS Viewer and APS web services, working in a connected environment with integrated data from MONGODB database.
+This is an APS Cost Analysis Sample: A responsive javascript based web application that showcases the use of APS Viewer and APS web services, working in a connected environment with integrated data from MONGODB database. This sample helps in analysing cost breakdown of a model as per material property.
 
 ## Development
 

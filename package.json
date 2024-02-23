@@ -1,5 +1,5 @@
 {
-  "name": "rcdb",
+  "name": "aps-cost-analysis",
   "version": "1.0.0",
   "description": "A responsive javascript based web application that showcases the use of APS Viewer and APS web services, working in a connected environment with integrated data from multiple databases.",
   "scripts": {
@@ -8,7 +8,7 @@
   "keywords": [
     "autodesk-platform-services"
   ],
-  "author": "Petr Broz <petr.broz@autodesk.com>",
+  "author": "Petr Broz <petr.broz@autodesk.com> & Deepali Srivastava <deepali.srivastava@autodesk.com>",
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",

@@ -14,12 +14,15 @@ async function getAccessToken(callback) {
 
 export function initViewer(container) {
   return new Promise(function (resolve, reject) {
-    Autodesk.Viewing.Initializer({ getAccessToken }, function () {
-      const viewer = new Autodesk.Viewing.GuiViewer3D(container);
-      viewer.start();
-      viewer.setTheme("light-theme");
-      resolve(viewer);
-    });
+    Autodesk.Viewing.Initializer(
+      { env: "AutodeskProduction", getAccessToken },
+      function () {
+        const viewer = new Autodesk.Viewing.GuiViewer3D(container);
+        viewer.start();
+        viewer.setTheme("light-theme");
+        resolve(viewer);
+      }
+    );
   });
 }
 
@@ -41,7 +44,9 @@ export function loadModel(viewer, urn) {
 
 export function search(viewer, propertyName, propertyValue) {
   return new Promise(function (resolve, reject) {
-    viewer.search(propertyValue, resolve, reject, [propertyName]);
+    viewer.search(propertyValue, resolve, reject, [propertyName], {
+      includeInherited: true,
+    });
   });
 }
 
@@ -53,5 +58,14 @@ export function getProperties(viewer, dbids, propertyName) {
       resolve,
       reject
     );
+  });
+}
+export function getAllDbIds(viewer) {
+  var instanceTree = viewer.model.getData().instanceTree;
+
+  var allDbIdsStr = Object.keys(instanceTree.nodeAccess.dbIdToIndex);
+
+  return allDbIdsStr.map(function (id) {
+    return parseInt(id);
   });
 }
