@@ -52,3 +52,43 @@ export function getAllDbIds(viewer) {
     const allDbIdsStr = Object.keys(instanceTree.nodeAccess.dbIdToIndex);
     return allDbIdsStr.map(id => parseInt(id));
 }
+
+export class CustomPropertyPanel extends Autodesk.Viewing.Extensions.ViewerPropertyPanel {
+    constructor(viewer, options) {
+        super(viewer, options);
+        this.materialProperty = options.materialProperty;
+        this.materials = options.materials || [];
+        this.dbid = -1;
+    }
+
+    requestAggregatedNodeProperties(selectionSet) {
+        super.requestAggregatedNodeProperties(selectionSet);
+        if (Array.isArray(selectionSet) && selectionSet.length === 1 && selectionSet[0].selection.length === 1) {
+            this.dbid = selectionSet[0].selection[0];
+        } else {
+            this.dbid = -1;
+        }
+    }
+
+    setAggregatedProperties(properties, options) {
+        super.setAggregatedProperties(properties, options);
+        if (this.dbid > 1) {
+            this.viewer.getProperties(this.dbid, (result) => {
+                const property = result.properties.find(prop => prop.displayName === this.materialProperty);
+                if (property) {
+                    const material = this.materials.find(mat => mat.material === property.displayValue);
+                    if (material) {
+                        this.addProperty('Supplier', material.supplier, 'Cost Analysis');
+                        this.addProperty('Price', `${material.price} ${material.currency}`, 'Cost Analysis');
+                    }
+                }
+            });
+        }
+    }
+
+    setMaterials(materials) {
+        this.materials = materials;
+        this.isDirty = true;
+        this.requestProperties();
+    }
+}

@@ -1,4 +1,4 @@
-import { initViewer, loadModel, search, getProperties, getAllDbIds } from "./viewer.js";
+import { initViewer, loadModel, search, getProperties, getAllDbIds, CustomPropertyPanel } from "./viewer.js";
 import { initSidebar, updateSidebar } from "./sidebar.js";
 
 const params = new URLSearchParams(window.location.search);
@@ -6,7 +6,14 @@ const urn = params.get("urn");
 const materialProperty = params.get("material-property") || "Material";
 
 const viewer = await initViewer(document.getElementById("preview"));
+const panel = new CustomPropertyPanel(viewer, { materialProperty });
 loadModel(viewer, urn);
+
+viewer.addEventListener(Autodesk.Viewing.EXTENSION_LOADED_EVENT, function (e) {
+    if (e.extensionId === 'Autodesk.PropertiesManager') {
+        viewer.getExtension('Autodesk.PropertiesManager').setPanel(panel);
+    }
+});
 
 viewer.addEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, async function () {
     const currencies = await fetch("/currencies").then(resp => resp.json());
@@ -21,6 +28,7 @@ viewer.addEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, async function (
         const materials = allMaterials.filter((material) => sharedMaterials.includes(material.material));
         const breakdown = await calculateCostBreakdown(viewer, materials, materialProperty, currencies);
         updateSidebar(materials, breakdown);
+        panel.setMaterials(materials);
     }
 
     function onMaterialSelected(material) {
