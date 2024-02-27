@@ -1,89 +1,89 @@
 body,
 html {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  font-family: ArtifaktElement;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: ArtifaktElement;
 }
 
 #header,
 #preview,
 #gallery {
-  position: absolute;
-  width: 100%;
+    position: absolute;
+    width: 100%;
 }
 
 #header {
-  height: 3em;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: start;
-  align-items: center;
+    height: 3em;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: start;
+    align-items: center;
 }
 
 #preview {
-  top: 3em;
-  bottom: 0;
-  left: 0;
-  width: 60%;
+    top: 3em;
+    bottom: 0;
+    left: 0;
+    width: 60%;
 }
 
 #gallery {
-  top: 3em;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  flex-flow: column;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    top: 3em;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    flex-flow: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #models {
-  flex-flow: row;
-  display: flex;
+    flex-flow: row;
+    display: flex;
 }
 
 #sidebar {
-  position: absolute;
-  top: 3em;
-  bottom: 0;
-  right: 0;
-  width: 40%;
-  display: flex;
-  flex-flow: column;
+    position: absolute;
+    top: 3em;
+    bottom: 0;
+    right: 0;
+    width: 40%;
+    display: flex;
+    flex-flow: column;
 }
 
 #sidebar .section {
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-bottom: 10px;
-  min-height: 0;
-  flex: 1 1 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    min-height: 0;
+    flex: 1 1 0px;
 }
 
-#header > * {
-  height: 2em;
-  margin: 0 0.5em;
-  font-size: 1em;
-  font-family: ArtifaktElement;
+#header>* {
+    height: 2em;
+    margin: 0 0.5em;
+    font-size: 1em;
+    font-family: ArtifaktElement;
 }
 
 #header .title {
-  height: auto;
-  font-weight: bold;
+    height: auto;
+    font-weight: bold;
 }
 
 .gallery-image {
-  height: 200px;
-  width: 200px;
-  margin: 20px;
+    height: 200px;
+    width: 200px;
+    margin: 20px;
 }
 
 .gallery-image:hover {
-  outline: 1px solid black;
+    outline: 1px solid black;
 }
 
 .tabulator .tabulator-tableholder {
-  display: flex;
+    display: flex;
 }
