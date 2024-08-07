@@ -5,7 +5,7 @@
 [![npm](https://img.shields.io/badge/npm-8.11-blue.svg)](https://www.npmjs.com/)
 [![license](https://img.shields.io/:license-mit-green.svg)](https://opensource.org/licenses/MIT)
 
-![screenshot](screenshot.png)
+![screenshot](thumbnail.png)
 
 This is an APS Cost Analysis Sample: A responsive javascript based web application that showcases the use of APS Viewer and APS web services, working in a connected environment with integrated data from MONGODB database. This sample helps in analysing cost breakdown of a model as per material property.
 
